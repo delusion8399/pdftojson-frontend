@@ -361,50 +361,168 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm">
               {step === "upload" && (
-                <div
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={onDrop}
-                  onClick={() => fileInputRef.current?.click()}
-                  className="group rounded-2xl border-2 border-dashed border-border hover:border-primary/50 bg-muted/30 p-12 text-center cursor-pointer transition-all duration-300 hover:bg-muted/50"
-                >
-                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                    📄
+                <div className="space-y-6">
+                  {file && (
+                    <div className="rounded-xl border border-green-500/20 bg-green-500/10 p-4 animate-fade-in">
+                      <div className="flex items-center gap-3">
+                        <div className="flex-shrink-0">
+                          <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                            <svg
+                              className="w-5 h-5 text-green-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-green-400">
+                            File selected successfully
+                          </p>
+                          <p className="text-sm text-green-300/80 truncate">
+                            {file.name}
+                          </p>
+                          <p className="text-xs text-green-300/60">
+                            {(file.size / 1024).toFixed(1)} KB •{" "}
+                            {file.type || "PDF Document"}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setFile(null)}
+                          className="flex-shrink-0 p-1 rounded-md hover:bg-green-500/20 transition-colors"
+                          title="Remove file"
+                        >
+                          <svg
+                            className="w-4 h-4 text-green-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  <div
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={onDrop}
+                    onClick={() => fileInputRef.current?.click()}
+                    className={`group rounded-2xl border-2 border-dashed transition-all duration-300 cursor-pointer ${
+                      file
+                        ? "border-green-500/50 bg-green-500/5 hover:bg-green-500/10"
+                        : "border-border hover:border-primary/50 bg-muted/30 hover:bg-muted/50"
+                    } p-12 text-center`}
+                  >
+                    <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                      {file ? "✅" : "📄"}
+                    </div>
+                    <p className="text-lg font-medium mb-2">
+                      {file
+                        ? "File ready to process"
+                        : "Drag & drop a PDF here"}
+                    </p>
+                    <p className="text-muted-foreground mb-6">
+                      {file
+                        ? "Click to select a different file"
+                        : "or click to choose from your device"}
+                    </p>
+                    <div
+                      className={`inline-flex items-center rounded-xl px-6 py-3 text-sm font-medium transition-all duration-300 hover:scale-105 ${
+                        file
+                          ? "bg-green-500 text-white hover:bg-green-600"
+                          : "bg-primary text-primary-foreground hover:bg-primary/90"
+                      }`}
+                    >
+                      {file ? "Change file" : "Browse files"}
+                    </div>
+                    <input
+                      ref={fileInputRef}
+                      onChange={onInput}
+                      type="file"
+                      accept=".pdf,application/pdf"
+                      className="sr-only"
+                      tabIndex={-1}
+                    />
                   </div>
-                  <p className="text-lg font-medium mb-2">
-                    Drag & drop a PDF here
-                  </p>
-                  <p className="text-muted-foreground mb-6">
-                    or click to choose from your device
-                  </p>
-                  <div className="inline-flex items-center rounded-xl px-6 py-3 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 hover:scale-105">
-                    Browse files
-                  </div>
-                  <input
-                    ref={fileInputRef}
-                    onChange={onInput}
-                    type="file"
-                    accept=".pdf,application/pdf"
-                    className="sr-only"
-                    tabIndex={-1}
-                  />
                 </div>
               )}
 
               {step === "parsing" && (
-                <div className="flex items-center gap-4 text-foreground py-12 justify-center">
-                  <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted border-t-primary" />
-                  <span className="text-lg font-medium">
-                    Processing your PDF...
-                  </span>
+                <div className="space-y-6">
+                  {file && (
+                    <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex-shrink-0">
+                          <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                            <div className="w-5 h-5 animate-spin rounded-full border-2 border-blue-300 border-t-blue-500" />
+                          </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-blue-400">
+                            Processing file
+                          </p>
+                          <p className="text-sm text-blue-300/80 truncate">
+                            {file.name}
+                          </p>
+                          <p className="text-xs text-blue-300/60">
+                            Extracting text and structure...
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-4 text-foreground py-12 justify-center">
+                    <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted border-t-primary" />
+                    <span className="text-lg font-medium">
+                      Processing your PDF...
+                    </span>
+                  </div>
                 </div>
               )}
 
               {step === "review" && (
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <div className="text-muted-foreground">
-                      <span className="font-medium">{file?.name}</span> (
-                      {file ? (file.size / 1024).toFixed(1) : "0.0"} KB)
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                        <svg
+                          className="w-4 h-4 text-green-500"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <div className="text-muted-foreground">
+                        <div className="font-medium text-foreground">
+                          {file?.name}
+                        </div>
+                        <div className="text-sm">
+                          {file ? (file.size / 1024).toFixed(1) : "0.0"} KB •
+                          Processing complete
+                        </div>
+                      </div>
                     </div>
                     <button
                       className="rounded-xl px-4 py-2 border border-border bg-card hover:bg-muted text-sm font-medium transition-all duration-300 hover:scale-105"
